@@ -1,0 +1,294 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/space-grotesk";
+
+/* ------------------------------------------------------------------
+   Emerg Technologies — design tokens
+   Colors, type, radii, shadows and motion timing live here so every
+   component pulls from one source of truth.
+------------------------------------------------------------------- */
+@theme {
+  --color-deep: #030811;
+  --color-midnight: #081220;
+  --color-surface: #0c1a2e;
+  --color-surface-2: #10223a;
+  --color-cyan: #00d1ff;
+  --color-teal: #00e6b8;
+  --color-ink: #e8f3ff;
+  --color-muted: #9bafc4;
+  --color-line: rgb(155 175 196 / 0.16);
+  --color-line-strong: rgb(155 175 196 / 0.3);
+
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk Variable", "Inter Variable", ui-sans-serif,
+    system-ui, sans-serif;
+
+  --radius-card: 1.25rem;
+  --radius-pill: 999px;
+
+  --shadow-glow: 0 0 0 1px rgb(0 209 255 / 0.35),
+    0 12px 40px -12px rgb(0 209 255 / 0.35);
+  --shadow-card: 0 18px 50px -24px rgb(0 0 0 / 0.7);
+
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 160ms;
+  --duration-base: 320ms;
+  --duration-slow: 700ms;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-deep);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: rgb(0 209 255 / 0.3);
+  color: #fff;
+}
+
+/* Visible, consistent focus ring for keyboard users */
+:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ---------------- Reusable building blocks ---------------- */
+.container-x {
+  width: 100%;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+@media (min-width: 640px) {
+  .container-x {
+    padding-inline: 2rem;
+  }
+}
+
+.section-y {
+  padding-block: clamp(4rem, 9vw, 7.5rem);
+}
+
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-cyan);
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, var(--color-cyan), var(--color-teal));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.card {
+  position: relative;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: linear-gradient(
+    180deg,
+    rgb(16 34 58 / 0.7),
+    rgb(8 18 32 / 0.85)
+  );
+  box-shadow: var(--shadow-card);
+  transition:
+    border-color var(--duration-base) var(--ease-out-expo),
+    box-shadow var(--duration-base) var(--ease-out-expo),
+    transform var(--duration-base) var(--ease-out-expo);
+}
+@media (hover: hover) and (pointer: fine) {
+  .card-hover:hover {
+    border-color: rgb(0 209 255 / 0.45);
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-3px);
+  }
+}
+.card-hover:focus-within {
+  border-color: rgb(0 209 255 / 0.55);
+  box-shadow: var(--shadow-glow);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.9rem; /* >= 44px touch target */
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) ease,
+    border-color var(--duration-fast) ease,
+    transform var(--duration-fast) ease,
+    box-shadow var(--duration-base) ease;
+}
+.btn:active {
+  transform: scale(0.97);
+}
+.btn-primary {
+  background: linear-gradient(100deg, var(--color-cyan), var(--color-teal));
+  color: #021018;
+}
+@media (hover: hover) {
+  .btn-primary:hover {
+    box-shadow: 0 10px 30px -8px rgb(0 209 255 / 0.55);
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-cyan);
+    background: rgb(0 209 255 / 0.08);
+  }
+}
+.btn-ghost {
+  border: 1px solid var(--color-line-strong);
+  color: var(--color-ink);
+}
+
+/* Hairline divider that lights up where it is "connected" */
+.rule-glow {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(0 209 255 / 0.5),
+    transparent
+  );
+}
+
+/* ---------------- Atmosphere (CSS only, behind content) ---------------- */
+.atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 40rem at 85% -10%, rgb(0 209 255 / 0.1), transparent 60%),
+    radial-gradient(50rem 36rem at -10% 30%, rgb(0 230 184 / 0.06), transparent 60%),
+    linear-gradient(180deg, var(--color-deep), var(--color-midnight) 55%, var(--color-deep));
+}
+.atmosphere::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--color-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  opacity: 0.22;
+  mask-image: radial-gradient(ellipse at 70% 10%, #000, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at 70% 10%, #000, transparent 70%);
+}
+
+/* Slow, low-amplitude drift for decorative glows */
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0);
+  }
+}
+.drift {
+  animation: drift 9s ease-in-out infinite;
+}
+
+/* Node pulse used in the logo and network lines */
+@keyframes pulse-node {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+.pulse-node {
+  animation: pulse-node 3.2s ease-in-out infinite;
+}
+
+/* Dash flow along network paths */
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -48;
+  }
+}
+.dash-flow {
+  stroke-dasharray: 6 10;
+  animation: dash-flow 6s linear infinite;
+}
+
+/* ---------------- Reduced motion & no-JS safety ---------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  /* Content must never depend on motion to become visible */
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  padding: 0.7rem 1rem;
+  border-radius: 0.6rem;
+  background: var(--color-cyan);
+  color: #021018;
+  font-weight: 600;
+  transition: top var(--duration-fast) ease;
+}
+.skip-link:focus {
+  top: 1rem;
+}

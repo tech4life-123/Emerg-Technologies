@@ -1,0 +1,86 @@
+import {
+  Boxes,
+  Briefcase,
+  Building,
+  ChartColumn,
+  ClipboardList,
+  Cloud,
+  CodeXml,
+  Compass,
+  BrainCircuit,
+  Eye,
+  FileText,
+  Gauge,
+  Globe,
+  GraduationCap,
+  HandHeart,
+  HeartHandshake,
+  IdCard,
+  Landmark,
+  Layers,
+  Lightbulb,
+  MapPin,
+  RefreshCw,
+  Rocket,
+  Scale,
+  School,
+  ShieldCheck,
+  ShoppingBag,
+  Smartphone,
+  Sparkles,
+  Store,
+  Truck,
+  Users,
+  Workflow,
+  type LucideIcon,
+} from "lucide-react";
+import type { IconName } from "@/types";
+
+const icons: Record<IconName, LucideIcon> = {
+  "graduation-cap": GraduationCap,
+  landmark: Landmark,
+  truck: Truck,
+  "shopping-bag": ShoppingBag,
+  "map-pin": MapPin,
+  "id-card": IdCard,
+  "heart-handshake": HeartHandshake,
+  "code-xml": CodeXml,
+  "brain-circuit": BrainCircuit,
+  boxes: Boxes,
+  school: School,
+  globe: Globe,
+  smartphone: Smartphone,
+  compass: Compass,
+  "bar-chart": ChartColumn,
+  cloud: Cloud,
+  store: Store,
+  building: Building,
+  "hand-heart": HandHeart,
+  rocket: Rocket,
+  briefcase: Briefcase,
+  "shield-check": ShieldCheck,
+  layers: Layers,
+  gauge: Gauge,
+  eye: Eye,
+  scale: Scale,
+  users: Users,
+  lightbulb: Lightbulb,
+  sparkles: Sparkles,
+  "refresh-cw": RefreshCw,
+  workflow: Workflow,
+  "file-text": FileText,
+  "clipboard-list": ClipboardList,
+};
+
+export function Icon({
+  name,
+  className,
+  size = 24,
+}: {
+  name: IconName;
+  className?: string;
+  size?: number;
+}) {
+  const Cmp = icons[name];
+  return <Cmp className={className} size={size} aria-hidden="true" strokeWidth={1.7} />;
+}

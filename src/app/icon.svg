@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Emerg Technologies symbol">
+  <defs>
+    <linearGradient id="e-dark-s" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#00D1FF"/><stop offset="1" stop-color="#0A6CF0"/>
+    </linearGradient>
+    <linearGradient id="e-dark-b" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#00E6B8"/><stop offset="1" stop-color="#00D1FF"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#081220"/><g transform="translate(6.4 6.4) scale(0.8)">
+    <path d="M10 8H21V56H10Z" fill="url(#e-dark-s)"/>
+    <path d="M24 8H50L44.5 18H24Z" fill="url(#e-dark-b)"/>
+    <path d="M24 27H40L34.5 37H24Z" fill="url(#e-dark-b)"/>
+    <path d="M24 46H50L44.5 56H24Z" fill="url(#e-dark-b)"/>
+    <circle cx="54.5" cy="13" r="2.7" fill="#E8F3FF"/>
+    <circle cx="44.5" cy="32" r="2.7" fill="#E8F3FF"/>
+    <circle cx="54.5" cy="51" r="2.7" fill="#E8F3FF"/>
+  </g>
+</svg>
