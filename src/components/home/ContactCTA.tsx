@@ -10,7 +10,7 @@ export function ContactCTA() {
           <div className="card relative overflow-hidden px-6 py-12 text-center sm:px-12 sm:py-16">
             <div
               aria-hidden="true"
-              className="drift pointer-events-none absolute left-1/2 top-0 h-56 w-[36rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan/15 blur-3xl"
+              className="drift pointer-events-none absolute left-1/2 top-0 h-56 w-[36rem] -translate-x-1/2 -translate-y-1/2 rounded-full glow"
             />
             <h2 id="cta-title" className="relative text-[clamp(1.8rem,4.6vw,3rem)] font-semibold">
               Let&rsquo;s Build Something Great Together.

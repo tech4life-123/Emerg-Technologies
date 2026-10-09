@@ -89,7 +89,7 @@ export default function GlobeCanvas({ onReady }: Props) {
       const next = Math.max(1, Math.round(rect.width));
       if (next === size && canvas!.width > 0) return;
       size = next;
-      dpr = Math.min(window.devicePixelRatio || 1, lowPower ? 1.5 : 2);
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       canvas!.width = Math.round(size * dpr);
       canvas!.height = Math.round(size * dpr);
       canvas!.style.width = `${size}px`;
@@ -259,7 +259,7 @@ export default function GlobeCanvas({ onReady }: Props) {
 
     function loop(now: number) {
       raf = requestAnimationFrame(loop);
-      const minGap = lowPower ? 1000 / 30 : 1000 / 60;
+      const minGap = 1000 / 30;
       if (now - lastPaint < minGap) return;
       lastPaint = now;
       cx += (tx - cx) * 0.06;
