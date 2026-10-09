@@ -137,18 +137,17 @@ export const products: Product[] = [
     name: "HeartBridge",
     category: "Consumer applications",
     shortDescription:
-      "A dating and social connection platform preview.",
+      "A dating and social connection platform.",
     longDescription: [
-      "HeartBridge is a dating and social connection platform. It is shown here as a preview of a consumer application.",
+      "HeartBridge is a dating and social connection platform, available to use online.",
     ],
     icon: "heart-handshake",
     accent: "#ff6b8a",
-    status: "prototype",
+    status: "live",
     url: "https://heartbridge-mu.vercel.app/app",
     urlVerified: true,
-    notice:
-      "Preview of a consumer application. It is a prototype and not yet a finished public service.",
-    ctaLabel: "Open the preview",
+    verifiedOn: "2026-10-08",
+    ctaLabel: "Open HeartBridge",
   },
 ];
 
