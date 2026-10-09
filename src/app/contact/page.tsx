@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Clock3, ListChecks, ShieldCheck } from "lucide-react";
+import { Clock3, ListChecks, MessageCircle, ShieldCheck } from "lucide-react";
 import { ContactForm } from "@/components/contact/ContactForm";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Reveal } from "@/components/motion/Reveal";
@@ -67,6 +67,23 @@ export default function ContactPage() {
               </div>
             </Reveal>
           ))}
+          <Reveal>
+            <a
+              href={`https://wa.me/${siteConfig.whatsapp.wa}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="card card-hover flex min-h-11 items-center gap-4 p-5"
+            >
+              <MessageCircle size={24} aria-hidden="true" className="shrink-0 text-teal" />
+              <span>
+                <span className="block text-base font-semibold">Chat on WhatsApp</span>
+                <span className="mt-1 block text-sm text-muted">
+                  {siteConfig.whatsapp.display}
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </span>
+              </span>
+            </a>
+          </Reveal>
           {siteConfig.contactEmail && (
             <Reveal>
               <p className="text-sm text-muted">

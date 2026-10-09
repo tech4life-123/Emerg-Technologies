@@ -27,6 +27,8 @@ export const siteConfig = {
   copyrightYear: process.env.NEXT_PUBLIC_COPYRIGHT_YEAR ?? "2026",
   /** Public contact address used for the mailto fallback. */
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "",
+  /** WhatsApp number (Liberia, +231). Digits only in `wa` for the wa.me link. */
+  whatsapp: { display: "+231 77 876 0759", wa: "231778760759" },
   /** Verified social profiles only. Leave empty until real. */
   socials: [] as { label: string; href: string }[],
 };

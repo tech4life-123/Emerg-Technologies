@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail } from "lucide-react";
+import { Mail, MessageCircle } from "lucide-react";
 import { EmergLogo } from "@/components/brand/EmergLogo";
 import { company, legalNav, siteConfig } from "@/data/company";
 import { products } from "@/data/products";
@@ -51,6 +51,15 @@ export function Footer() {
                 <Mail size={16} aria-hidden="true" /> {siteConfig.contactEmail}
               </a>
             )}
+            <a
+              href={`https://wa.me/${siteConfig.whatsapp.wa}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 flex min-h-11 w-fit items-center gap-2 text-sm text-ink hover:text-cyan"
+            >
+              <MessageCircle size={16} aria-hidden="true" /> WhatsApp {siteConfig.whatsapp.display}
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
             {siteConfig.socials.length > 0 && (
               <ul className="mt-4 flex gap-4">
                 {siteConfig.socials.map((s) => (

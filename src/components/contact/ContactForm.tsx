@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useId, useRef, useState, type FormEvent, type ReactNode } from "react";
-import { AlertCircle, CheckCircle2, Loader2, Mail, Send } from "lucide-react";
+import { AlertCircle, CheckCircle2, Loader2, Mail, MessageCircle, Send } from "lucide-react";
 import { budgetRanges, siteConfig } from "@/data/company";
 import { getProduct } from "@/data/products";
 import {
@@ -367,15 +367,26 @@ export function ContactForm() {
               <span>
                 <strong className="font-semibold">Your message was not sent.</strong> {serverMessage}{" "}
                 {mailtoHref
-                  ? "You can send it by email instead using the button below. Your text is filled in for you."
-                  : "Please try again later."}
+                  ? "You can send it by email instead using the button below, or message us on WhatsApp."
+                  : "Please try again later or message us on WhatsApp."}
               </span>
             </p>
-            {mailtoHref && (
-              <a href={mailtoHref} className="btn btn-ghost">
-                <Mail size={17} aria-hidden="true" /> Email us instead
+            <div className="flex flex-wrap gap-3">
+              {mailtoHref && (
+                <a href={mailtoHref} className="btn btn-ghost">
+                  <Mail size={17} aria-hidden="true" /> Email us instead
+                </a>
+              )}
+              <a
+                href={`https://wa.me/${siteConfig.whatsapp.wa}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-ghost"
+              >
+                <MessageCircle size={17} aria-hidden="true" /> WhatsApp us
+                <span className="sr-only"> (opens in a new tab)</span>
               </a>
-            )}
+            </div>
           </div>
         )}
         {status === "error" && (
