@@ -145,9 +145,9 @@ export const products: Product[] = [
     accent: "#ff6b8a",
     status: "prototype",
     url: "https://heartbridge-mu.vercel.app/app",
-    urlVerified: false,
+    urlVerified: true,
     notice:
-      "Preview. We could not automatically confirm this link is reachable, so it is not labelled live.",
+      "Preview of a consumer application. It is a prototype and not yet a finished public service.",
     ctaLabel: "Open the preview",
   },
 ];
