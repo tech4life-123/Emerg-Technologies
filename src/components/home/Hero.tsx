@@ -2,7 +2,7 @@
 
 import { m, type Variants } from "motion/react";
 import Link from "next/link";
-import { useId } from "react";
+import { Fragment, useId } from "react";
 import { ArrowRight } from "lucide-react";
 import { DigitalGlobe } from "@/components/home/DigitalGlobe";
 import { SYMBOL, TONES } from "@/components/brand/brand-geometry.generated";
@@ -84,7 +84,8 @@ function Headline() {
   return (
     <h1 id="hero-title" className="mt-5 text-[clamp(2.5rem,7.4vw,5rem)] font-bold leading-[1.02]">
       {words.map((w, i) => (
-        <span key={i} className="inline-block overflow-hidden pb-[0.12em] align-bottom">
+        <Fragment key={i}>
+        <span className="inline-block overflow-hidden pb-[0.12em] align-bottom">
           <m.span
             data-reveal
             custom={i}
@@ -96,8 +97,9 @@ function Headline() {
             {w}
             {i === words.length - 1 ? "." : ""}
           </m.span>
-          {i < words.length - 1 ? " " : ""}
         </span>
+        {i < words.length - 1 ? " " : ""}
+        </Fragment>
       ))}
     </h1>
   );
