@@ -37,8 +37,10 @@ export default function PrivacyPage() {
         <h2>Who handles it</h2>
         <ul>
           <li>
-            <strong>Email delivery.</strong> When you send the form, your message is passed to an
-            email delivery service so that it reaches our inbox.
+            <strong>WhatsApp.</strong> When you use the contact form, it opens WhatsApp with your
+            details written into a message addressed to us. Nothing is sent until you press Send in
+            WhatsApp. Once you do, WhatsApp (operated by Meta) handles the message under its own
+            terms and privacy policy. This website does not store your enquiry on its own servers.
           </li>
           <li>
             <strong>Hosting.</strong> This site is hosted on Vercel, which may keep standard server

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useId, useRef, useState, type FormEvent, type ReactNode } from "react";
-import { AlertCircle, CheckCircle2, Loader2, Mail, MessageCircle, Send } from "lucide-react";
+import { AlertCircle, CheckCircle2, MessageCircle } from "lucide-react";
 import { budgetRanges, siteConfig } from "@/data/company";
 import { getProduct } from "@/data/products";
 import {
@@ -13,9 +13,10 @@ import {
   type FieldErrors,
   type InquiryInput,
 } from "@/lib/validation";
+import { buildWhatsAppText, whatsappUrl } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 
-type Status = "idle" | "submitting" | "sent" | "not_configured" | "error";
+type Status = "idle" | "opened";
 
 const DEMO_SERVICE = "Request a product demonstration";
 
@@ -77,14 +78,12 @@ export function ContactForm() {
   const [honeypot, setHoneypot] = useState("");
   const [errors, setErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<Status>("idle");
-  const [serverMessage, setServerMessage] = useState("");
-  const startedAt = useRef<number>(0);
+  const [waLink, setWaLink] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
 
   const id = (name: keyof InquiryInput) => `${uid}-${name}`;
   const set = <K extends keyof InquiryInput>(key: K, value: InquiryInput[K]) => {
-    if (!startedAt.current) startedAt.current = Date.now();
     setValues((v) => ({ ...v, [key]: value }));
     if (errors[key]) setErrors((e) => ({ ...e, [key]: undefined }));
   };
@@ -104,19 +103,8 @@ export function ContactForm() {
     if (first) formRef.current?.querySelector<HTMLElement>(`#${id(first)}`)?.focus();
   }
 
-  const mailtoHref = siteConfig.contactEmail
-    ? `mailto:${siteConfig.contactEmail}?subject=${encodeURIComponent(
-        `Website enquiry: ${values.service || "General"}`,
-      )}&body=${encodeURIComponent(
-        `${values.message}\n\n— ${values.name}${values.organization ? `, ${values.organization}` : ""}${
-          values.email ? ` (${values.email})` : ""
-        }`,
-      )}`
-    : "";
-
-  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+  function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (status === "submitting") return;
 
     const check = validateInquiry(values);
     if (!check.ok) {
@@ -125,51 +113,18 @@ export function ContactForm() {
       focusFirstError(check.errors);
       return;
     }
-
     setErrors({});
-    setStatus("submitting");
-    setServerMessage("");
 
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...check.data,
-          website: honeypot,
-          elapsedMs: startedAt.current ? Date.now() - startedAt.current : 0,
-        }),
-      });
-      const data = (await res.json().catch(() => ({}))) as {
-        ok?: boolean;
-        error?: string;
-        message?: string;
-        errors?: FieldErrors;
-      };
+    // Hidden trap field: real visitors never fill it in.
+    if (honeypot) return;
 
-      if (res.ok && data.ok === true) {
-        setStatus("sent");
-        setValues((v) => ({ ...v, message: "", consent: false }));
-      } else if (data.error === "validation" && data.errors) {
-        setErrors(data.errors);
-        setStatus("idle");
-        focusFirstError(data.errors);
-      } else if (data.error === "not_configured") {
-        setStatus("not_configured");
-        setServerMessage(data.message ?? "");
-      } else {
-        setStatus("error");
-        setServerMessage(data.message ?? "Something went wrong. Please try again.");
-      }
-    } catch {
-      setStatus("error");
-      setServerMessage("We could not reach the server. Check your connection and try again.");
-    }
-    // Move attention to the result so keyboard and screen-reader users notice it.
+    const link = whatsappUrl(siteConfig.whatsapp.wa, buildWhatsAppText(check.data));
+    setWaLink(link);
+    setStatus("opened");
+    // Opened straight from the tap so phone browsers allow it.
+    window.open(link, "_blank", "noopener,noreferrer");
     requestAnimationFrame(() => statusRef.current?.focus());
   }
-
-  const submitting = status === "submitting";
 
   return (
     <form ref={formRef} onSubmit={onSubmit} noValidate className="card space-y-5 p-5 sm:p-8">
@@ -331,16 +286,8 @@ export function ContactForm() {
       </div>
 
       <div className="flex flex-wrap items-center gap-4">
-        <button type="submit" className="btn btn-primary min-w-44" disabled={submitting} aria-disabled={submitting}>
-          {submitting ? (
-            <>
-              <Loader2 size={18} aria-hidden="true" className="animate-spin" /> Sending…
-            </>
-          ) : (
-            <>
-              Send message <Send size={17} aria-hidden="true" />
-            </>
-          )}
+        <button type="submit" className="btn btn-primary min-w-44">
+          <MessageCircle size={18} aria-hidden="true" /> Send on WhatsApp
         </button>
         {Object.keys(errors).length > 0 && (
           <p role="alert" className="text-sm text-[#ff9db0]">
@@ -351,61 +298,21 @@ export function ContactForm() {
 
       {/* Result region: always rendered so screen readers announce changes. */}
       <div ref={statusRef} tabIndex={-1} role="status" aria-live="polite" className="outline-none">
-        {status === "sent" && (
-          <p className="flex items-start gap-3 rounded-xl border border-teal/40 bg-teal/10 p-4 text-sm">
-            <CheckCircle2 size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-teal" />
-            <span>
-              <strong className="font-semibold">Message sent.</strong> Thank you. We have received your
-              enquiry and will reply to the email address you gave.
-            </span>
-          </p>
-        )}
-        {status === "not_configured" && (
-          <div className="space-y-3 rounded-xl border border-[#ffd166]/50 bg-[#ffd166]/10 p-4 text-sm">
+        {status === "opened" && (
+          <div className="space-y-3 rounded-xl border border-teal/40 bg-teal/10 p-4 text-sm">
             <p className="flex items-start gap-3">
-              <AlertCircle size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-[#ffd166]" />
+              <CheckCircle2 size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-teal" />
               <span>
-                <strong className="font-semibold">Your message was not sent.</strong> {serverMessage}{" "}
-                {mailtoHref
-                  ? "You can send it by email instead using the button below, or message us on WhatsApp."
-                  : "Please try again later or message us on WhatsApp."}
+                <strong className="font-semibold">WhatsApp should now be open with your message ready.</strong>{" "}
+                Your enquiry is only delivered once you press <strong>Send</strong> in WhatsApp. If
+                nothing opened, use the button below.
               </span>
             </p>
-            <div className="flex flex-wrap gap-3">
-              {mailtoHref && (
-                <a href={mailtoHref} className="btn btn-ghost">
-                  <Mail size={17} aria-hidden="true" /> Email us instead
-                </a>
-              )}
-              <a
-                href={`https://wa.me/${siteConfig.whatsapp.wa}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-ghost"
-              >
-                <MessageCircle size={17} aria-hidden="true" /> WhatsApp us
-                <span className="sr-only"> (opens in a new tab)</span>
-              </a>
-            </div>
+            <a href={waLink} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+              <MessageCircle size={17} aria-hidden="true" /> Open WhatsApp
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
           </div>
-        )}
-        {status === "error" && (
-          <p className="flex items-start gap-3 rounded-xl border border-[#ff6b8a]/50 bg-[#ff6b8a]/10 p-4 text-sm">
-            <AlertCircle size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-[#ff6b8a]" />
-            <span>
-              <strong className="font-semibold">Your message was not sent.</strong> {serverMessage}
-              {mailtoHref && (
-                <>
-                  {" "}
-                  You can also{" "}
-                  <a href={mailtoHref} className="text-cyan underline underline-offset-2">
-                    email us directly
-                  </a>
-                  .
-                </>
-              )}
-            </span>
-          </p>
         )}
       </div>
     </form>

@@ -29,7 +29,7 @@ const expectations = [
   {
     icon: Clock3,
     title: "What happens next",
-    text: "We read your message and reply to the email address you provide.",
+    text: "The form opens WhatsApp with your message ready. Press Send there and we will reply, on WhatsApp or by email.",
   },
 ];
 
@@ -39,7 +39,7 @@ export default function ContactPage() {
       <PageHeader
         eyebrow="Contact"
         title="Let's Build Something Great Together."
-        description="Tell us about your project. Required fields are your name, organization, email, a service and a short description."
+        description="Tell us about your project. Required fields are your name, organization, email, a service and a short description. The form opens WhatsApp so you can send it to us directly."
       />
 
       <section aria-label="Contact form" className="container-x grid gap-10 pb-16 lg:grid-cols-[1.5fr_1fr]">
